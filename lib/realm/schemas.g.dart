@@ -76,3 +76,51 @@ class Item extends _Item with RealmEntity, RealmObjectBase, RealmObject {
     ]);
   }
 }
+
+class Release extends _Release with RealmEntity, RealmObjectBase, RealmObject {
+  Release(
+    ObjectId id,
+    String barcode,
+    String title,
+  ) {
+    RealmObjectBase.set(this, '_id', id);
+    RealmObjectBase.set(this, 'barcode', barcode);
+    RealmObjectBase.set(this, 'title', title);
+  }
+
+  Release._();
+
+  @override
+  ObjectId get id => RealmObjectBase.get<ObjectId>(this, '_id') as ObjectId;
+  @override
+  set id(ObjectId value) => RealmObjectBase.set(this, '_id', value);
+
+  @override
+  String get barcode => RealmObjectBase.get<String>(this, 'barcode') as String;
+  @override
+  set barcode(String value) => RealmObjectBase.set(this, 'barcode', value);
+
+  @override
+  String get title => RealmObjectBase.get<String>(this, 'title') as String;
+  @override
+  set title(String value) => RealmObjectBase.set(this, 'title', value);
+
+  @override
+  Stream<RealmObjectChanges<Release>> get changes =>
+      RealmObjectBase.getChanges<Release>(this);
+
+  @override
+  Release freeze() => RealmObjectBase.freezeObject<Release>(this);
+
+  static SchemaObject get schema => _schema ??= _initSchema();
+  static SchemaObject? _schema;
+  static SchemaObject _initSchema() {
+    RealmObjectBase.registerFactory(Release._);
+    return const SchemaObject(ObjectType.realmObject, Release, 'Release', [
+      SchemaProperty('_id', RealmPropertyType.objectid,
+          mapTo: '_id', primaryKey: true),
+      SchemaProperty('barcode', RealmPropertyType.string),
+      SchemaProperty('title', RealmPropertyType.string),
+    ]);
+  }
+}

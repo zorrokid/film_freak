@@ -13,3 +13,12 @@ class _Item {
   late String ownerId;
   late int? priority;
 }
+
+@RealmModel()
+class _Release {
+  @MapTo('_id')
+  @PrimaryKey()
+  late ObjectId id;
+  late String barcode;
+  late String title;
+}

@@ -1,5 +1,7 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_todo/services/barcode_scan_service.dart';
 import 'dart:convert';
 import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
@@ -7,10 +9,16 @@ import 'package:flutter_todo/realm/app_services.dart';
 import 'package:flutter_todo/realm/init_realm.dart';
 import 'package:flutter_todo/screens/homepage.dart';
 import 'package:flutter_todo/screens/log_in.dart';
+import 'features/scan/scan.dart';
+import 'features/scan_results/scan_results.dart';
+
+// TODO: move to app state
+List<CameraDescription> cameras = [];
 
 void main() async {
   // get app id from config
   WidgetsFlutterBinding.ensureInitialized();
+  cameras = await availableCameras();
   final realmConfig =
       json.decode(await rootBundle.loadString('assets/config/realm.json'));
   String appId = realmConfig['appId'];
@@ -48,8 +56,12 @@ class App extends StatelessWidget {
         ),
         initialRoute: currentUser != null ? '/' : '/login',
         routes: {
-          '/': (context) => const HomePage(),
-          '/login': (context) => LogIn()
+          '/home': (context) => const HomePage(),
+          '/login': (context) => LogIn(),
+          '/': (context) => ScanResults(
+                barcodeScanService: BarcodeScanService(),
+              ),
+          '/scan': (context) => const Scan(),
         },
       ),
     );
