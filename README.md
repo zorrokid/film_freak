@@ -8,7 +8,7 @@ flutter pub run realm generate
 
 ## Configuration
 
-Ensure `flutter_todo/assets/config/realm.json` exists and contains the following properties:
+Ensure `assets/config/realm.json` exists and contains the following properties:
 
 - **appId:** your Atlas App Services App ID.
 - **baseUrl:** the App Services backend URL. This should be https://realm.mongodb.com in most cases.
