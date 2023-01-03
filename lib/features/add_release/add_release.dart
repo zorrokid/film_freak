@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo/viewmodels/release_viewmodel.dart';
+import 'package:provider/provider.dart';
+import 'package:realm/realm.dart';
 
 import '../../components/decorated_text_form_field.dart';
+import '../../realm/schemas.dart';
 import '../../services/release_service.dart';
 
 class AddRelease extends StatefulWidget {
@@ -33,8 +37,10 @@ class _AddReleaseState extends State<AddRelease> {
     return null;
   }
 
-  void _save() {
-    releaseService.save(_barcodeController.text, _nameController.text);
+  void _save(Realm realm) {
+    // TODO check if form valid
+    ReleaseViewmodel.create(realm,
+        Release(ObjectId(), _barcodeController.text, _nameController.text));
   }
 
   @override
@@ -58,9 +64,13 @@ class _AddReleaseState extends State<AddRelease> {
           )
         ]),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _save,
-        child: const Icon(Icons.save),
+      floatingActionButton: Consumer<Realm>(
+        builder: (context, realm, child) {
+          return FloatingActionButton(
+            onPressed: () => _save(realm),
+            child: const Icon(Icons.save),
+          );
+        },
       ),
     );
   }

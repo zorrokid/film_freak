@@ -16,6 +16,7 @@ class ScanResults extends StatefulWidget {
 
 class _ScanResultsState extends State<ScanResults> {
   late List<Release> _releases;
+  String _barcode = '';
 
   @override
   void initState() {
@@ -30,7 +31,8 @@ class _ScanResultsState extends State<ScanResults> {
     if (!mounted) return;
     if (exists) {
       setState(() {
-        _releases = widget.barcodeScanService.getReleases(barcode);
+        _barcode = barcode;
+        //_releases = widget.barcodeScanService.getReleases(barcode);
       });
     } else if (!exists) {
       // when barcode doesn't exist, create a new release with collection item
@@ -48,7 +50,7 @@ class _ScanResultsState extends State<ScanResults> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Scan results')),
-      body: ScanResultsList(releases: _releases),
+      body: ScanResultsList(barcode: _barcode),
       floatingActionButton: FloatingActionButton(
         onPressed: () => scanBarcode(context),
         child: const Icon(Icons.search),
