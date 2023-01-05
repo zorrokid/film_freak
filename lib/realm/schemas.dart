@@ -21,4 +21,6 @@ class _Release {
   late ObjectId id;
   late String barcode;
   late String title;
+  @MapTo('owner_id')
+  late String ownerId;
 }

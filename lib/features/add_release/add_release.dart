@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
 
 import '../../components/decorated_text_form_field.dart';
+import '../../realm/app_services.dart';
 import '../../realm/schemas.dart';
 import '../../services/release_service.dart';
 
@@ -37,14 +38,26 @@ class _AddReleaseState extends State<AddRelease> {
     return null;
   }
 
-  void _save(Realm realm) {
+  void _save(Realm realm, String ownerId) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Adding release ${_nameController.text}.'),
+      ),
+    );
+
     // TODO check if form valid
-    ReleaseViewmodel.create(realm,
-        Release(ObjectId(), _barcodeController.text, _nameController.text));
+    ReleaseViewmodel.create(
+      realm,
+      Release(
+          ObjectId(), _barcodeController.text, _nameController.text, ownerId),
+    );
+
+    Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = Provider.of<AppServices>(context).currentUser;
     setState(() {});
     return Scaffold(
       appBar: AppBar(title: const Text('Add release')),
@@ -67,7 +80,7 @@ class _AddReleaseState extends State<AddRelease> {
       floatingActionButton: Consumer<Realm>(
         builder: (context, realm, child) {
           return FloatingActionButton(
-            onPressed: () => _save(realm),
+            onPressed: () => _save(realm, currentUser!.id),
             child: const Icon(Icons.save),
           );
         },

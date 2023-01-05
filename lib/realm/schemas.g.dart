@@ -82,10 +82,12 @@ class Release extends _Release with RealmEntity, RealmObjectBase, RealmObject {
     ObjectId id,
     String barcode,
     String title,
+    String ownerId,
   ) {
     RealmObjectBase.set(this, '_id', id);
     RealmObjectBase.set(this, 'barcode', barcode);
     RealmObjectBase.set(this, 'title', title);
+    RealmObjectBase.set(this, 'owner_id', ownerId);
   }
 
   Release._();
@@ -106,6 +108,11 @@ class Release extends _Release with RealmEntity, RealmObjectBase, RealmObject {
   set title(String value) => RealmObjectBase.set(this, 'title', value);
 
   @override
+  String get ownerId => RealmObjectBase.get<String>(this, 'owner_id') as String;
+  @override
+  set ownerId(String value) => RealmObjectBase.set(this, 'owner_id', value);
+
+  @override
   Stream<RealmObjectChanges<Release>> get changes =>
       RealmObjectBase.getChanges<Release>(this);
 
@@ -121,6 +128,7 @@ class Release extends _Release with RealmEntity, RealmObjectBase, RealmObject {
           mapTo: '_id', primaryKey: true),
       SchemaProperty('barcode', RealmPropertyType.string),
       SchemaProperty('title', RealmPropertyType.string),
+      SchemaProperty('owner_id', RealmPropertyType.string, mapTo: 'owner_id'),
     ]);
   }
 }

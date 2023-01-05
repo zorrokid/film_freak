@@ -8,11 +8,25 @@ class ReleaseViewmodel {
   final String title;
   final Realm realm;
   final Release release;
+  final String ownerId;
 
   ReleaseViewmodel._(
-      this.realm, this.release, this.id, this.barcode, this.title);
+    this.realm,
+    this.release,
+    this.id,
+    this.barcode,
+    this.title,
+    this.ownerId,
+  );
   ReleaseViewmodel(Realm realm, Release release)
-      : this._(realm, release, release.id, release.barcode, release.title);
+      : this._(
+          realm,
+          release,
+          release.id,
+          release.barcode,
+          release.title,
+          release.ownerId,
+        );
 
   static ReleaseViewmodel create(Realm realm, Release release) {
     final itemInRealm = realm.write<Release>(() => realm.add<Release>(release));

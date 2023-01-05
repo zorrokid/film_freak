@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/features/add_release/add_release.dart';
 import 'package:flutter_todo/features/scan_results/scan_results_list.dart';
+import 'package:provider/provider.dart';
+import 'package:realm/realm.dart';
 import '../../realm/schemas.dart';
 import '../../services/barcode_scan_service.dart';
 
@@ -15,20 +17,21 @@ class ScanResults extends StatefulWidget {
 }
 
 class _ScanResultsState extends State<ScanResults> {
-  late List<Release> _releases;
   String _barcode = '';
 
   @override
   void initState() {
     super.initState();
-    _releases = [];
   }
 
   Future<void> scanBarcode(BuildContext context) async {
     final barcode = (await Navigator.pushNamed(context, '/scan')) as String?;
-    if (barcode == null) return;
-    final exists = widget.barcodeScanService.exists(barcode);
-    if (!mounted) return;
+    if (barcode == null || !mounted) return;
+    final realm = Provider.of<Realm?>(context, listen: false);
+    if (realm == null) return;
+    final exists =
+        realm.all<Release>().query('barcode == "$barcode"').isNotEmpty;
+    //final exists = widget.barcodeScanService.exists(barcode);
     if (exists) {
       setState(() {
         _barcode = barcode;
