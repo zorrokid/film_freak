@@ -31,11 +31,9 @@ class _ScanResultsState extends State<ScanResults> {
     if (realm == null) return;
     final exists =
         realm.all<Release>().query('barcode == "$barcode"').isNotEmpty;
-    //final exists = widget.barcodeScanService.exists(barcode);
     if (exists) {
       setState(() {
         _barcode = barcode;
-        //_releases = widget.barcodeScanService.getReleases(barcode);
       });
     } else if (!exists) {
       // when barcode doesn't exist, create a new release with collection item
