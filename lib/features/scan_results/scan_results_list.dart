@@ -24,13 +24,10 @@ class _ScanResultsListState extends State<ScanResultsList> {
     if (realm == null) {
       return Container();
     }
-
-    final stream =
-        //realm.query<Release>('owner_id == "${currentUser?.id}"').changes;
-        realm
-            .query<Release>(
-                'owner_id == "${currentUser?.id}" AND barcode == "${widget.barcode}"')
-            .changes;
+    final stream = realm
+        .query<Release>(
+            'owner_id == "${currentUser?.id}" AND barcode == "${widget.barcode}"')
+        .changes;
 
     return StreamBuilder<RealmResultsChanges<Release>>(
       stream: stream,
