@@ -1,6 +1,6 @@
 # film_freak
 
-This is based on my prototype (https://github.com/zorrokid/film_freak) and Realm Flutter template app. 
+This is based on my prototype (https://github.com/zorrokid/film_freak) and [Realm Flutter](https://realm.io/realm-flutter/) template app. 
 
 ## Update model schema 
 
