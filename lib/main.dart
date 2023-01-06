@@ -50,7 +50,7 @@ class App extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async => false,
       child: MaterialApp(
-        title: 'Realm Flutter Todo',
+        title: 'film_freak',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
