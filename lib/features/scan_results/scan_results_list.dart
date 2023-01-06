@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo/features/scan_results/scan_result_list_tile.dart';
 import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
 
@@ -24,10 +25,15 @@ class _ScanResultsListState extends State<ScanResultsList> {
     if (realm == null) {
       return Container();
     }
+
     final stream = realm
         .query<Release>(
             'owner_id == "${currentUser?.id}" AND barcode == "${widget.barcode}"')
         .changes;
+
+    void onDelete(ObjectId id) {
+      _releaseViewmodels.where((e) => e.id == id).single.delete();
+    }
 
     return StreamBuilder<RealmResultsChanges<Release>>(
       stream: stream,
@@ -71,9 +77,9 @@ class _ScanResultsListState extends State<ScanResultsList> {
         return ListView.builder(
           itemCount: _releaseViewmodels.length,
           itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(_releaseViewmodels[index].title),
-              subtitle: Text(_releaseViewmodels[index].barcode),
+            return ScanResultListTile(
+              viewModel: _releaseViewmodels[index],
+              onDelete: onDelete,
             );
           },
         );

@@ -32,4 +32,8 @@ class ReleaseViewmodel {
     final itemInRealm = realm.write<Release>(() => realm.add<Release>(release));
     return ReleaseViewmodel(realm, itemInRealm);
   }
+
+  void delete() {
+    realm.write(() => realm.delete(release));
+  }
 }
