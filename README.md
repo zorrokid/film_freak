@@ -2,6 +2,31 @@
 
 This is based on my prototype (https://github.com/zorrokid/film_freak) and [Realm Flutter](https://realm.io/realm-flutter/) template app. 
 
+## Architecture
+
+```mermaid
+flowchart TB 
+    App<-->ServerlessFunction
+    App<-->AuthenticationProvider
+    App<-->Secrets
+    LocalRealmDB<-->RealmDB
+    subgraph MobileDevice
+        direction TB
+        App<-->LocalRealmDB
+        App<-->FileSystem
+    end
+    subgraph CloudService 
+        direction TB
+        ServerlessFunction<-->MongoDB
+        subgraph AppService
+            direction TB
+            AuthenticationProvider
+            RealmDB
+            Secrets
+        end
+    end
+```
+
 ## Update model schema 
 
 flutter pub run realm generate
